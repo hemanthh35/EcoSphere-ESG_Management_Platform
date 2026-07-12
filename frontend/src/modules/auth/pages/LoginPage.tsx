@@ -14,7 +14,7 @@ export function LoginPage() {
     const response = await authService.login(data);
     await login(response.access_token, response.refresh_token);
     
-    const from = (location.state as any)?.from?.pathname || '/';
+    const from = (location.state as any)?.from?.pathname || '/dashboard';
     navigate(from, { replace: true });
   };
 

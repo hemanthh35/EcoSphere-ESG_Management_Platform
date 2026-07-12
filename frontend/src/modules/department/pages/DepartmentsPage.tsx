@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table';
-import { Edit2, Trash2, Plus, Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Edit2, Trash2, Plus, Search, ChevronLeft, ChevronRight, Network } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useDepartments, useDeleteDepartment } from '@/hooks/useDepartments';
 import { DepartmentForm } from '@/components/departments/DepartmentForm';
 import { StatusBadge } from '@/components/ui/Badge';
@@ -67,11 +68,19 @@ export function DepartmentsPage() {
       header: 'Employees',
       cell: (info) => <span className="text-slate-500">{info.getValue()}</span>,
     }),
-    columnHelper.accessor('created_at', {
-      header: 'Created',
+    columnHelper.accessor('department_head_name', {
+      header: 'Head',
       cell: (info) => (
-        <span className="text-slate-400 text-xs">
-          {new Date(info.getValue()).toLocaleDateString()}
+        <span className="text-slate-600 font-medium">
+          {info.getValue() || <span className="text-slate-400 italic">Unassigned</span>}
+        </span>
+      ),
+    }),
+    columnHelper.accessor('parent_department_name', {
+      header: 'Parent Dept',
+      cell: (info) => (
+        <span className="text-slate-600">
+          {info.getValue() || <span className="text-slate-400">—</span>}
         </span>
       ),
     }),
@@ -111,21 +120,10 @@ export function DepartmentsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Page Header */}
-      <div className="bg-white border-b border-slate-200 px-6 py-5">
-        <div className="max-w-7xl mx-auto flex flex-col gap-1">
-          <h1 className="text-2xl font-bold text-slate-700 tracking-tight">Department Management</h1>
-          <p className="text-sm text-slate-400">
-            Manage organizational hierarchy and ESG ownership units.
-          </p>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 py-6 space-y-5">
-        {/* Summary Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {[
+    <div className="space-y-5">
+      {/* Summary Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
             { label: 'Total Departments', value: total },
             { label: 'Active', value: departments.filter((d) => d.status === 'ACTIVE').length },
             { label: 'Inactive', value: departments.filter((d) => d.status === 'INACTIVE').length },
@@ -163,17 +161,26 @@ export function DepartmentsPage() {
             </button>
           </form>
 
-          <button
-            id="create-department-btn"
-            onClick={handleOpenCreate}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-md transition-colors focus-ring"
-            style={{ backgroundColor: '#10b981' }}
-            onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = '#059669')}
-            onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = '#10b981')}
-          >
-            <Plus size={15} />
-            New Department
-          </button>
+          <div className="flex gap-2">
+            <Link
+              to="/departments/hierarchy"
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-md hover:bg-slate-50 transition-colors focus-ring"
+            >
+              <Network size={15} className="text-primary" />
+              Hierarchy View
+            </Link>
+            <button
+              id="create-department-btn"
+              onClick={handleOpenCreate}
+              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white rounded-md transition-colors focus-ring"
+              style={{ backgroundColor: '#10b981' }}
+              onMouseEnter={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = '#059669')}
+              onMouseLeave={(e) => ((e.target as HTMLButtonElement).style.backgroundColor = '#10b981')}
+            >
+              <Plus size={15} />
+              New Department
+            </button>
+          </div>
         </div>
 
         {/* Data Table */}
@@ -259,8 +266,6 @@ export function DepartmentsPage() {
             </div>
           )}
         </div>
-      </div>
-
       {/* Form Modal */}
       {formOpen && (
         <DepartmentForm

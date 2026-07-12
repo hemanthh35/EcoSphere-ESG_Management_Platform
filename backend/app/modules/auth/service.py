@@ -68,8 +68,10 @@ class AuthService:
             )
             return self.repository.create_user(new_profile)
         except Exception as e:
-            # Re-raise or handle specific Supabase errors (e.g. user exists)
             from fastapi import HTTPException
+            error_msg = str(e).lower()
+            if "duplicate key" in error_msg or "unique constraint" in error_msg or "already exists" in error_msg or "already registered" in error_msg:
+                raise HTTPException(status_code=400, detail="An account with this email address is already registered.")
             raise HTTPException(status_code=400, detail=f"Registration failed: {str(e)}")
 
     def logout(self, token: str):

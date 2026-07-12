@@ -69,8 +69,21 @@ class DepartmentRepository:
         parent_id: Optional[uuid.UUID] = None,
         sort_by: DepartmentSortField = DepartmentSortField.CREATED_AT,
         sort_order: SortOrder = SortOrder.DESC,
-    ) -> Tuple[List[Department], int]:
-        query = self._active_query()
+    ) -> Tuple[List[dict], int]:
+        from app.modules.auth.models import Profile
+        from sqlalchemy.orm import aliased
+
+        ParentDept = aliased(Department)
+
+        query = self.db.query(
+            Department,
+            Profile.full_name.label("department_head_name"),
+            ParentDept.name.label("parent_department_name")
+        ).outerjoin(
+            Profile, Department.department_head_id == Profile.id
+        ).outerjoin(
+            ParentDept, Department.parent_department_id == ParentDept.id
+        ).filter(Department.deleted_at.is_(None))
 
         if search:
             pattern = f"%{search}%"
@@ -95,7 +108,24 @@ class DepartmentRepository:
         query = query.order_by(order_fn(sort_col))
 
         items = query.offset(skip).limit(limit).all()
-        return items, total
+        
+        results = []
+        for dept, head_name, parent_name in items:
+            dept_dict = {
+                "id": dept.id,
+                "name": dept.name,
+                "code": dept.code,
+                "status": dept.status,
+                "employee_count": dept.employee_count,
+                "parent_department_id": dept.parent_department_id,
+                "department_head_name": head_name,
+                "parent_department_name": parent_name,
+                "created_at": dept.created_at,
+                "updated_at": dept.updated_at,
+            }
+            results.append(dept_dict)
+
+        return results, total
 
     def update(self, dept_id: uuid.UUID, updated_by: uuid.UUID, **kwargs) -> Optional[Department]:
         dept = self.get_by_id(dept_id)
@@ -146,3 +176,51 @@ class DepartmentRepository:
         if exclude_id:
             query = query.filter(Department.id != exclude_id)
         return query.count() > 0
+
+    def get_department_tree(self) -> List[dict]:
+        """Build a hierarchical tree of departments."""
+        departments = self._active_query().all()
+        dept_dict = {dept.id: {
+            "id": dept.id, "name": dept.name, "code": dept.code, 
+            "status": dept.status, "employee_count": dept.employee_count, 
+            "parent_department_id": dept.parent_department_id, "children": []
+        } for dept in departments}
+
+        tree = []
+        for dept in departments:
+            node = dept_dict[dept.id]
+            if dept.parent_department_id and dept.parent_department_id in dept_dict:
+                dept_dict[dept.parent_department_id]["children"].append(node)
+            else:
+                tree.append(node)
+        return tree
+
+    def get_dropdown_list(self) -> List[dict]:
+        """Get minimal department info for dropdowns (active only)."""
+        res = self._active_query().filter(Department.status == "ACTIVE").with_entities(
+            Department.id, Department.name, Department.code
+        ).all()
+        return [{"id": r[0], "name": r[1], "code": r[2]} for r in res]
+
+    def get_statistics(self) -> dict:
+        """Get dashboard statistics for departments."""
+        total = self._active_query().count()
+        active = self._active_query().filter(Department.status == "ACTIVE").count()
+        inactive = self._active_query().filter(Department.status == "INACTIVE").count()
+        total_employees = self.db.query(func.sum(Department.employee_count)).filter(Department.deleted_at.is_(None)).scalar() or 0
+        return {
+            "total_departments": total,
+            "active_departments": active,
+            "inactive_departments": inactive,
+            "total_employees": total_employees
+        }
+
+    def get_employees(self, dept_id: uuid.UUID) -> List[dict]:
+        """Get employees assigned to this department."""
+        from app.modules.auth.models import Profile
+        return self.db.query(Profile).filter(Profile.department_id == dept_id).all()
+
+    def get_children(self, dept_id: uuid.UUID) -> List[Department]:
+        """Get direct child departments."""
+        return self._active_query().filter(Department.parent_department_id == dept_id).all()
+

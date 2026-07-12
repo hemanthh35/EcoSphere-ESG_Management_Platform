@@ -137,3 +137,35 @@ class DepartmentService:
 
         dept = self.repo.soft_delete(dept_id, updated_by=updated_by)
         return DepartmentResponse.model_validate(dept)
+
+    def get_department_tree(self) -> List[dict]:
+        return self.repo.get_department_tree()
+
+    def get_dropdown_list(self) -> List[dict]:
+        return self.repo.get_dropdown_list()
+
+    def get_statistics(self) -> dict:
+        return self.repo.get_statistics()
+
+    def get_employees(self, dept_id: uuid.UUID) -> List[dict]:
+        existing = self.repo.get_by_id(dept_id)
+        if not existing:
+            raise DepartmentNotFoundError(str(dept_id))
+        employees = self.repo.get_employees(dept_id)
+        return [
+            {
+                "id": emp.id,
+                "full_name": emp.full_name,
+                "email": emp.email,
+                "designation": emp.designation,
+                "status": emp.status.value,
+            }
+            for emp in employees
+        ]
+
+    def get_children(self, dept_id: uuid.UUID) -> List[DepartmentResponse]:
+        existing = self.repo.get_by_id(dept_id)
+        if not existing:
+            raise DepartmentNotFoundError(str(dept_id))
+        children = self.repo.get_children(dept_id)
+        return [DepartmentResponse.model_validate(c) for c in children]

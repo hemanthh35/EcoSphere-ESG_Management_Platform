@@ -105,6 +105,8 @@ class DepartmentListItem(BaseModel):
     status: DepartmentStatus
     employee_count: int
     parent_department_id: Optional[uuid.UUID]
+    department_head_name: Optional[str] = None
+    parent_department_name: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
@@ -131,3 +133,45 @@ class DepartmentQueryParams(BaseModel):
     parent_id: Optional[uuid.UUID] = None
     sort_by: DepartmentSortField = DepartmentSortField.CREATED_AT
     sort_order: SortOrder = SortOrder.DESC
+
+
+class DepartmentTreeResponse(BaseModel):
+    """Recursive schema for department hierarchy tree."""
+    id: uuid.UUID
+    name: str
+    code: str
+    status: DepartmentStatus
+    employee_count: int
+    parent_department_id: Optional[uuid.UUID]
+    children: List["DepartmentTreeResponse"] = []
+
+    model_config = {"from_attributes": True}
+
+
+class DepartmentDropdownResponse(BaseModel):
+    """Minimal schema for dropdown lists."""
+    id: uuid.UUID
+    name: str
+    code: str
+
+    model_config = {"from_attributes": True}
+
+
+class DepartmentStatisticsResponse(BaseModel):
+    """Statistics for the department dashboard."""
+    total_departments: int
+    active_departments: int
+    inactive_departments: int
+    total_employees: int
+
+
+class DepartmentEmployeeResponse(BaseModel):
+    """Schema for an employee belonging to a department."""
+    id: uuid.UUID
+    full_name: str
+    email: str
+    designation: Optional[str]
+    status: str
+
+    model_config = {"from_attributes": True}
+

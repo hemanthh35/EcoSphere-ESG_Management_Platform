@@ -13,6 +13,10 @@ from app.modules.department.schemas import (
     DepartmentUpdate,
     DepartmentResponse,
     PaginatedDepartmentResponse,
+    DepartmentTreeResponse,
+    DepartmentDropdownResponse,
+    DepartmentStatisticsResponse,
+    DepartmentEmployeeResponse,
 )
 from app.shared.response_models import ResponseModel
 from app.core.exceptions import (
@@ -86,6 +90,45 @@ def create_department(
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/tree", response_model=ResponseModel[list[DepartmentTreeResponse]])
+def get_department_tree(
+    service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
+):
+    """Retrieve the full department hierarchy tree."""
+    try:
+        tree = service.get_department_tree()
+        return ResponseModel.ok(data=tree)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/dropdown", response_model=ResponseModel[list[DepartmentDropdownResponse]])
+def get_department_dropdown(
+    service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
+):
+    """Retrieve active departments for dropdown selection."""
+    try:
+        data = service.get_dropdown_list()
+        return ResponseModel.ok(data=data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/statistics", response_model=ResponseModel[DepartmentStatisticsResponse])
+def get_department_statistics(
+    service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
+):
+    """Retrieve department summary statistics."""
+    try:
+        stats = service.get_statistics()
+        return ResponseModel.ok(data=stats)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/{dept_id}", response_model=ResponseModel[DepartmentResponse])
 def get_department(
     dept_id: uuid.UUID,
@@ -100,6 +143,39 @@ def get_department(
         raise HTTPException(status_code=404, detail=e.message)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/{dept_id}/employees", response_model=ResponseModel[list[DepartmentEmployeeResponse]])
+def get_department_employees(
+    dept_id: uuid.UUID,
+    service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
+):
+    """Retrieve all employees belonging to a department."""
+    try:
+        employees = service.get_employees(dept_id)
+        return ResponseModel.ok(data=employees)
+    except DepartmentNotFoundError as e:
+        raise HTTPException(status_code=404, detail=e.message)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/{dept_id}/children", response_model=ResponseModel[list[DepartmentResponse]])
+def get_department_children(
+    dept_id: uuid.UUID,
+    service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
+):
+    """Retrieve all direct child departments."""
+    try:
+        children = service.get_children(dept_id)
+        return ResponseModel.ok(data=children)
+    except DepartmentNotFoundError as e:
+        raise HTTPException(status_code=404, detail=e.message)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @router.put("/{dept_id}", response_model=ResponseModel[DepartmentResponse])

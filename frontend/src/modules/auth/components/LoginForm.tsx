@@ -46,6 +46,7 @@ export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
           </div>
           <input
             type="email"
+            autoComplete="username"
             {...register('email')}
             className="focus:ring-primary focus:border-primary block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
             placeholder="you@company.com"
@@ -64,6 +65,7 @@ export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
           </div>
           <input
             type="password"
+            autoComplete="current-password"
             {...register('password')}
             className="focus:ring-primary focus:border-primary block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 px-3 border"
             placeholder="••••••••"

@@ -23,6 +23,8 @@ export interface DepartmentListItem {
   status: DepartmentStatus;
   employee_count: number;
   parent_department_id?: string | null;
+  department_head_name?: string;
+  parent_department_name?: string;
   created_at: string;
   updated_at: string;
 }
@@ -70,3 +72,35 @@ export interface DepartmentQueryParams {
   sort_by?: string;
   sort_order?: 'asc' | 'desc';
 }
+
+export interface DepartmentTreeResponse {
+  id: string;
+  name: string;
+  code: string;
+  status: DepartmentStatus;
+  employee_count: number;
+  parent_department_id?: string | null;
+  children: DepartmentTreeResponse[];
+}
+
+export interface DepartmentDropdownResponse {
+  id: string;
+  name: string;
+  code: string;
+}
+
+export interface DepartmentStatisticsResponse {
+  total_departments: number;
+  active_departments: number;
+  inactive_departments: number;
+  total_employees: number;
+}
+
+export interface DepartmentEmployeeResponse {
+  id: string;
+  full_name: string;
+  email: string;
+  designation?: string | null;
+  status: string;
+}
+

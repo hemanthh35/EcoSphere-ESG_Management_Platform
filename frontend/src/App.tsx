@@ -12,6 +12,16 @@ import { ChangePasswordPage } from '@/modules/auth/pages/ChangePasswordPage';
 import { AccessDeniedPage } from '@/modules/auth/pages/AccessDeniedPage';
 import { UnauthorizedPage } from '@/modules/auth/pages/UnauthorizedPage';
 import { DepartmentsPage } from '@/modules/department/pages/DepartmentsPage';
+import { DepartmentHierarchyPage } from '@/modules/department/pages/DepartmentHierarchyPage';
+import { DepartmentDetailsPage } from '@/modules/department/pages/DepartmentDetailsPage';
+
+import { SettingsLayout } from '@/modules/settings/layouts/SettingsLayout';
+import { CategoriesPage } from '@/modules/settings/pages/CategoriesPage';
+import { ESGConfigurationPage } from '@/modules/settings/pages/ESGConfigurationPage';
+import { NotificationSettingsPage } from '@/modules/settings/pages/NotificationSettingsPage';
+
+import { PublicLayout } from '@/layouts/PublicLayout';
+import { LandingPage } from '@/pages/LandingPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +38,12 @@ export default function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
+            {/* Public Routes */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<LandingPage />} />
+            </Route>
+
+            {/* Auth Routes */}
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
@@ -35,11 +51,32 @@ export default function App() {
             <Route path="/403" element={<AccessDeniedPage />} />
             <Route path="/401" element={<UnauthorizedPage />} />
             
+            {/* Protected Dashboard Routes */}
             <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-              <Route path="/" element={<Navigate to="/departments" replace />} />
-              <Route path="/departments" element={<DepartmentsPage />} />
+              <Route path="/dashboard" element={<Navigate to="/settings/departments" replace />} />
+              
+              {/* Settings Module */}
+              <Route path="/settings" element={<SettingsLayout />}>
+                <Route path="departments" element={<DepartmentsPage />} />
+                <Route path="categories" element={<CategoriesPage />} />
+                <Route path="configuration" element={<ESGConfigurationPage />} />
+                <Route path="notifications" element={<NotificationSettingsPage />} />
+              </Route>
+              
+              {/* Department Deep Links */}
+              <Route path="/departments/hierarchy" element={<DepartmentHierarchyPage />} />
+              <Route path="/departments/:id" element={<DepartmentDetailsPage />} />
+              
+              {/* Profile */}
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/profile/settings" element={<ChangePasswordPage />} />
+
+              {/* Placeholders for other modules */}
+              <Route path="/environmental" element={<div className="p-12 text-center text-slate-500">Environmental module coming soon.</div>} />
+              <Route path="/social" element={<div className="p-12 text-center text-slate-500">Social module coming soon.</div>} />
+              <Route path="/governance" element={<div className="p-12 text-center text-slate-500">Governance module coming soon.</div>} />
+              <Route path="/gamification" element={<div className="p-12 text-center text-slate-500">Gamification module coming soon.</div>} />
+              <Route path="/reports" element={<div className="p-12 text-center text-slate-500">Reports module coming soon.</div>} />
             </Route>
           </Routes>
         </BrowserRouter>
