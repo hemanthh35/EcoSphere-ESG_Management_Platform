@@ -38,6 +38,21 @@ While many ERP systems collect operational data, ESG reporting is often manual, 
 
 ## Business Workflow
 
+```mermaid
+flowchart TD
+    MC["Master Configuration<br>(Departments, Categories, Emission Factors, Products, Goals, Policies, Challenges)"] --> DBO["Daily Business Operations<br>(Purchase, Manufacturing, Expenses, Fleet)"]
+    DBO --> CT["Carbon Transactions"]
+    DBO --> EP["Employee Participation (CSR), Challenge Participation, Policy Acknowledgements, Audits"]
+    
+    CT --> ES["Environmental Score"]
+    EP --> SS["Social Score"]
+    EP --> GS["Governance Score"]
+    
+    ES & SS & GS --> DTS["Department Total Score"]
+    DTS --> OES["Overall ESG Score<br>(Weighted average: Env 40%, Soc 30%, Gov 30%)"]
+    OES --> ODR["Organization Dashboard & Reports"]
+```
+
 1. **Master Configuration**: Departments, Categories, Emission Factors, Products, Goals, Policies, Challenges.
 2. **Daily Business Operations**: Purchase, Manufacturing, Expenses, Fleet.
 3. **Transactions**: Carbon Transactions, Employee Participation (CSR), Challenge Participation, Policy Acknowledgements, Audits.
