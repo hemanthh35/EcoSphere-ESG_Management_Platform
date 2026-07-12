@@ -1,0 +1,30 @@
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
+from app.modules.department.router import router as department_router
+
+app = FastAPI(
+    title="EcoSphere ESG Management Platform",
+    description="API for EcoSphere: Environmental, Social, and Governance Management Platform",
+    version="1.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
+
+# CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register routers
+app.include_router(department_router)
+
+
+@app.get("/health", tags=["Health"])
+def health_check():
+    return {"status": "healthy", "service": "EcoSphere API"}
