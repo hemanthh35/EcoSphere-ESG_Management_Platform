@@ -7,67 +7,65 @@ import { ComplianceIssuesTab } from '../components/ComplianceIssuesTab';
 
 type Tab = 'policies' | 'acknowledgements' | 'audits' | 'issues';
 
+const tabs = [
+  { id: 'policies',        label: 'ESG Policies',      icon: FileText },
+  { id: 'acknowledgements',label: 'Acknowledgements',  icon: CheckSquare },
+  { id: 'audits',          label: 'Audits',            icon: ShieldCheck },
+  { id: 'issues',          label: 'Compliance Issues', icon: AlertTriangle },
+] as const;
+
 export default function GovernancePage() {
   const [activeTab, setActiveTab] = useState<Tab>('policies');
 
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'policies':
-        return <PolicyTable />;
-      case 'acknowledgements':
-        return <AcknowledgementsTab />;
-      case 'audits':
-        return <AuditTable />;
-      case 'issues':
-        return <ComplianceIssuesTab />;
-      default:
-        return <PolicyTable />;
-    }
-  };
-
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Governance & Compliance</h1>
-        <p className="text-sm text-slate-500 mt-1">Manage ESG policies, audits, and compliance tracking.</p>
+      {/* Page header */}
+      <div className="page-header">
+        <div className="flex items-center gap-2.5 mb-1">
+          <div className="w-8 h-8 rounded-lg bg-sky-50 flex items-center justify-center">
+            <ShieldCheck className="w-4 h-4 text-sky-500" strokeWidth={2} />
+          </div>
+          <h1 className="page-title">Governance &amp; Compliance</h1>
+        </div>
+        <p className="page-subtitle pl-10">
+          Manage ESG policies, audits, and compliance tracking.
+        </p>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="border-b border-slate-200">
-          <nav className="flex -mb-px px-4" aria-label="Tabs">
-            {[
-              { id: 'policies', label: 'ESG Policies', icon: FileText },
-              { id: 'acknowledgements', label: 'Acknowledgements', icon: CheckSquare },
-              { id: 'audits', label: 'Audits', icon: ShieldCheck },
-              { id: 'issues', label: 'Compliance Issues', icon: AlertTriangle },
-            ].map((tab) => {
+      {/* Tab card */}
+      <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden"
+        style={{ boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.06)' }}>
+        <div className="border-b border-neutral-200 overflow-x-auto">
+          <nav className="flex min-w-max px-2" aria-label="Governance tabs">
+            {tabs.map((tab) => {
+              const active = activeTab === tab.id;
               const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as Tab)}
                   className={`
-                    group inline-flex items-center px-4 py-4 border-b-2 font-medium text-sm transition-colors
-                    ${isActive 
-                      ? 'border-indigo-500 text-indigo-600' 
-                      : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                    inline-flex items-center gap-2 px-4 py-3.5 text-sm font-medium border-b-2 transition-colors whitespace-nowrap cursor-pointer
+                    ${active
+                      ? 'border-sky-500 text-sky-700 bg-sky-50/50'
+                      : 'border-transparent text-neutral-500 hover:text-neutral-700 hover:border-neutral-300'
                     }
                   `}
+                  aria-selected={active}
+                  role="tab"
                 >
-                  <Icon className={`
-                    mr-2 h-4 w-4
-                    ${isActive ? 'text-indigo-500' : 'text-slate-400 group-hover:text-slate-500'}
-                  `} />
+                  <Icon className={`w-4 h-4 ${active ? 'text-sky-500' : 'text-neutral-400'}`} strokeWidth={1.8} />
                   {tab.label}
                 </button>
               );
             })}
           </nav>
         </div>
-
         <div className="p-6">
-          {renderTabContent()}
+          {activeTab === 'policies'        && <PolicyTable />}
+          {activeTab === 'acknowledgements' && <AcknowledgementsTab />}
+          {activeTab === 'audits'          && <AuditTable />}
+          {activeTab === 'issues'          && <ComplianceIssuesTab />}
         </div>
       </div>
     </div>

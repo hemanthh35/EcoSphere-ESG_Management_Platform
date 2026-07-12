@@ -11,6 +11,8 @@ from app.modules.environmental.router import router as environmental_router
 from app.modules.social.router import router as social_router
 from app.modules.governance.router import router as governance_router
 from app.modules.gamification.router import router as gamification_router
+from app.modules.settings.router import router as settings_router
+from app.modules.reports.router import router as reports_router
 
 app = FastAPI(
     title="EcoSphere ESG Management Platform",
@@ -40,6 +42,8 @@ app.include_router(environmental_router)
 app.include_router(social_router)
 app.include_router(governance_router)
 app.include_router(gamification_router)
+app.include_router(settings_router)
+app.include_router(reports_router)
 
 
 @app.get("/health", tags=["Health"])

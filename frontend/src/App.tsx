@@ -28,6 +28,7 @@ import { EnvironmentalPage } from '@/modules/environmental/pages/EnvironmentalPa
 import GovernancePage from '@/modules/governance/pages/GovernancePage';
 import GamificationPage from '@/modules/gamification/pages/GamificationPage';
 import { SocialPage } from '@/modules/social/pages/SocialPage';
+import ReportsPage from '@/modules/reports/pages/ReportsPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -84,7 +85,7 @@ export default function App() {
               <Route path="/social" element={<SocialPage />} />
               <Route path="/governance" element={<GovernancePage />} />
               <Route path="/gamification" element={<GamificationPage />} />
-              <Route path="/reports" element={<div className="p-12 text-center text-slate-500">Reports module coming soon.</div>} />
+              <Route path="/reports" element={<ReportsPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
