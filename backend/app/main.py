@@ -27,6 +27,7 @@ app.include_router(auth_router)
 app.include_router(department_router)
 
 
+
 @app.get("/health", tags=["Health"])
 def health_check():
     return {"status": "healthy", "service": "EcoSphere API"}

@@ -13,6 +13,11 @@ class RoleEnum(str, enum.Enum):
     AUDITOR = "Auditor"
     EMPLOYEE = "Employee"
 
+class StatusEnum(str, enum.Enum):
+    ACTIVE = "Active"
+    INACTIVE = "Inactive"
+    SUSPENDED = "Suspended"
+
 class Profile(Base):
     __tablename__ = "profiles"
 
@@ -30,7 +35,8 @@ class Profile(Base):
     designation = Column(String, nullable=True)
     profile_image = Column(String, nullable=True)
     phone = Column(String, nullable=True)
-    status = Column(String, default="active")
+    status = Column(Enum(StatusEnum), default=StatusEnum.ACTIVE, nullable=False)
+    last_login = Column(DateTime, nullable=True)
     
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))

@@ -16,17 +16,20 @@ def get_current_user(
 ) -> Profile:
     token = credentials.credentials
     try:
-        # Supabase uses HS256 by default for its JWTs
-        payload = jwt.decode(
-            token,
-            settings.SUPABASE_JWT_SECRET,
-            algorithms=["HS256"],
-            options={"verify_aud": False}
-        )
-        user_id: str = payload.get("sub")
-        if user_id is None:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload")
-    except JWTError:
+        from app.modules.auth.service import get_supabase_client
+        supabase = get_supabase_client()
+        user_response = supabase.auth.get_user(token)
+        if not user_response or not user_response.user:
+            raise Exception("Invalid user response")
+            
+        user_id: str = user_response.user.id
+        # Build payload equivalent for downstream use
+        payload = {
+            "sub": user_id,
+            "email": user_response.user.email,
+            "user_metadata": user_response.user.user_metadata or {}
+        }
+    except Exception:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate credentials")
 
     profile = db.query(Profile).filter(Profile.id == user_id).first()

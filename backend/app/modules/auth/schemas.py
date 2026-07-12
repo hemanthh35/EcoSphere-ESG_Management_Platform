@@ -46,3 +46,19 @@ class ProfileResponse(ProfileBase):
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+class ResetPasswordRequest(BaseModel):
+    token: str # Could be a supabase recovery token or OTP
+    new_password: str
+
+class ChangePasswordRequest(BaseModel):
+    current_password: str
+    new_password: str
+
+class UserRegister(BaseModel):
+    email: EmailStr
+    password: str
+    full_name: str
