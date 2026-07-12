@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSphere Project Progress Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 24px;
+            width: 4px;
+            background-color: #e2e8f0;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen py-12">
+    <div class="max-w-4xl mx-auto px-6">
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight mb-3">EcoSphere Development Flow</h1>
+            <p class="text-lg text-slate-500">Live Project Tracking & Roadmap</p>
+        </header>
+
+        <div class="relative timeline-container ml-4 md:ml-12">
+            
+            <!-- Phase 0 -->
+            <div class="relative z-10 flex items-start mb-10">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500 border-4 border-white shadow flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="ml-6 bg-white p-6 rounded-xl shadow-sm border-2 border-emerald-500 w-full">
+                    <h3 class="text-xl font-bold text-emerald-700">Phase 0: Foundation</h3>
+                    <p class="text-slate-500 text-sm mb-3">Core infrastructure setup.</p>
+                    <ul class="text-sm text-slate-700 space-y-1">
+                        <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Backend Setup (FastAPI, Alembic)</li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Frontend Setup (React, Vite, Tailwind)</li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Database Configuration (PostgreSQL)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phase 1 -->
+            <div class="relative z-10 flex items-start mb-10">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-emerald-500 border-4 border-white shadow flex items-center justify-center">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+                <div class="ml-6 bg-white p-6 rounded-xl shadow-sm border-2 border-emerald-500 w-full">
+                    <h3 class="text-xl font-bold text-emerald-700">Phase 1: Authentication</h3>
+                    <p class="text-slate-500 text-sm mb-3">Secure access and user sessions.</p>
+                    <ul class="text-sm text-slate-700 space-y-1">
+                        <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Supabase Integration & Models</li>
+                        <li class="flex items-center"><span class="text-emerald-500 mr-2">✔</span> Login UI & JWT Protection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="relative z-10 flex items-start mb-10">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-blue-500 border-4 border-white shadow flex items-center justify-center animate-pulse">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="ml-6 bg-blue-50 p-6 rounded-xl shadow-md border-2 border-blue-500 w-full transform scale-[1.02] transition-transform">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xl font-bold text-blue-800">Phase 2: Master Data</h3>
+                        <span class="bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded font-bold uppercase tracking-wide">In Progress</span>
+                    </div>
+                    <p class="text-slate-500 text-sm mb-4">Establishing the core reference records across the platform.</p>
+                    <ul class="text-sm text-slate-700 space-y-2">
+                        <li class="flex items-center"><span class="text-emerald-600 font-bold mr-2">✔</span> <span class="line-through text-slate-400">Department Module</span></li>
+                        <li class="flex items-center"><span class="text-emerald-600 font-bold mr-2">✔</span> <span class="line-through text-slate-400">Category Module</span></li>
+                        <li class="flex items-center font-medium text-blue-700"><span class="w-3 h-3 rounded-full border-2 border-blue-500 mr-2"></span> Employee Participation / Profile</li>
+                        <li class="flex items-center text-slate-600"><span class="w-3 h-3 rounded-full border-2 border-slate-300 mr-2"></span> Product ESG Profile</li>
+                        <li class="flex items-center text-slate-600"><span class="w-3 h-3 rounded-full border-2 border-slate-300 mr-2"></span> Emission Factors Configuration</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="relative z-10 flex items-start mb-10 opacity-60">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-200 border-4 border-white shadow flex items-center justify-center">
+                    <span class="text-slate-500 font-bold">3</span>
+                </div>
+                <div class="ml-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 w-full">
+                    <h3 class="text-lg font-bold text-slate-700">Phase 3: Environmental</h3>
+                    <p class="text-slate-500 text-sm mt-1">Carbon transactions, emission factors, environmental goals, dashboard.</p>
+                </div>
+            </div>
+
+            <!-- Phase 4 -->
+            <div class="relative z-10 flex items-start mb-10 opacity-60">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-200 border-4 border-white shadow flex items-center justify-center">
+                    <span class="text-slate-500 font-bold">4</span>
+                </div>
+                <div class="ml-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 w-full">
+                    <h3 class="text-lg font-bold text-slate-700">Phase 4: Social</h3>
+                    <p class="text-slate-500 text-sm mt-1">CSR activities, employee participation, social dashboard.</p>
+                </div>
+            </div>
+
+            <!-- Phase 5 -->
+            <div class="relative z-10 flex items-start mb-10 opacity-60">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-200 border-4 border-white shadow flex items-center justify-center">
+                    <span class="text-slate-500 font-bold">5</span>
+                </div>
+                <div class="ml-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 w-full">
+                    <h3 class="text-lg font-bold text-slate-700">Phase 5: Governance</h3>
+                    <p class="text-slate-500 text-sm mt-1">ESG policies, audits, compliance tracking, governance dashboard.</p>
+                </div>
+            </div>
+
+            <!-- Phase 6 -->
+            <div class="relative z-10 flex items-start mb-10 opacity-60">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-200 border-4 border-white shadow flex items-center justify-center">
+                    <span class="text-slate-500 font-bold">6</span>
+                </div>
+                <div class="ml-6 bg-white p-6 rounded-xl shadow-sm border border-slate-200 w-full">
+                    <h3 class="text-lg font-bold text-slate-700">Phase 6: Gamification</h3>
+                    <p class="text-slate-500 text-sm mt-1">Challenges, badges, rewards, XP, leaderboards.</p>
+                </div>
+            </div>
+
+            <!-- Phase 7, 8, 9, 10 Combined for brevity in empty state -->
+            <div class="relative z-10 flex items-start opacity-60">
+                <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-200 border-4 border-white shadow flex items-center justify-center">
+                    <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </div>
+                <div class="ml-6 bg-slate-100 p-5 rounded-xl border border-slate-200 w-full text-slate-600 italic">
+                    Phases 7-10: Dashboards, Reports, Settings, and Final Deployment will follow the completion of the core modules.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

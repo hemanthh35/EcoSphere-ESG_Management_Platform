@@ -17,6 +17,7 @@ import { DepartmentDetailsPage } from '@/modules/department/pages/DepartmentDeta
 
 import { SettingsLayout } from '@/modules/settings/layouts/SettingsLayout';
 import { CategoriesPage } from '@/modules/settings/pages/CategoriesPage';
+import EmployeesPage from '@/modules/settings/pages/EmployeesPage';
 import { ESGConfigurationPage } from '@/modules/settings/pages/ESGConfigurationPage';
 import { NotificationSettingsPage } from '@/modules/settings/pages/NotificationSettingsPage';
 
@@ -59,6 +60,7 @@ export default function App() {
               <Route path="/settings" element={<SettingsLayout />}>
                 <Route path="departments" element={<DepartmentsPage />} />
                 <Route path="categories" element={<CategoriesPage />} />
+                <Route path="employees" element={<EmployeesPage />} />
                 <Route path="configuration" element={<ESGConfigurationPage />} />
                 <Route path="notifications" element={<NotificationSettingsPage />} />
               </Route>
