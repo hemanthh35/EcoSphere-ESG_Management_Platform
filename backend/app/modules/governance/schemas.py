@@ -136,3 +136,15 @@ class PaginatedAuditResponse(BaseModel):
     total: int
     skip: int
     limit: int
+
+class PaginatedAcknowledgementResponse(BaseModel):
+    items: List[PolicyAcknowledgementResponse]
+    total: int
+    skip: int
+    limit: int
+
+class PaginatedComplianceIssueResponse(BaseModel):
+    items: List[ComplianceIssueResponse]
+    total: int
+    skip: int
+    limit: int

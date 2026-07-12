@@ -12,6 +12,10 @@ export interface EnvironmentalReport {
     current_value: number;
     progress: number;
   }>;
+  monthly_trend?: Array<{
+    month: string;
+    offset: number;
+  }>;
 }
 
 export interface SocialReport {

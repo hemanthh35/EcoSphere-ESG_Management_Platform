@@ -68,3 +68,11 @@ class GovernanceService:
         audit = self.get_audit_by_id(audit_id)
         self.repo.delete_audit(audit)
         self.session.commit()
+
+    # --- Policy Acknowledgements ---
+    def get_acknowledgements(self, skip: int = 0, limit: int = 100, search: Optional[str] = None) -> Tuple[List[PolicyAcknowledgement], int]:
+        return self.repo.get_acknowledgements(skip, limit, search)
+
+    # --- Compliance Issues ---
+    def get_compliance_issues(self, skip: int = 0, limit: int = 100, search: Optional[str] = None) -> Tuple[List[ComplianceIssue], int]:
+        return self.repo.get_compliance_issues(skip, limit, search)

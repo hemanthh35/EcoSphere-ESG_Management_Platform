@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/modules/auth/AuthContext';
 import { ProtectedRoute } from '@/modules/auth/components/ProtectedRoute';
@@ -30,6 +30,8 @@ import GamificationPage from '@/modules/gamification/pages/GamificationPage';
 import { SocialPage } from '@/modules/social/pages/SocialPage';
 import ReportsPage from '@/modules/reports/pages/ReportsPage';
 
+import { DashboardPage } from '@/modules/dashboard/pages/DashboardPage';
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -60,7 +62,7 @@ export default function App() {
             
             {/* Protected Dashboard Routes */}
             <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-              <Route path="/dashboard" element={<Navigate to="/settings/departments" replace />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
               
               {/* Settings Module */}
               <Route path="/settings" element={<SettingsLayout />}>

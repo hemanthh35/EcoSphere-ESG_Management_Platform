@@ -8,7 +8,8 @@ from app.modules.auth.dependencies import get_current_user
 from app.modules.auth.models import Profile
 from .schemas import (
     ESGPolicyCreate, ESGPolicyUpdate, ESGPolicyResponse, PaginatedPolicyResponse,
-    AuditCreate, AuditUpdate, AuditResponse, PaginatedAuditResponse
+    AuditCreate, AuditUpdate, AuditResponse, PaginatedAuditResponse,
+    PaginatedAcknowledgementResponse, PaginatedComplianceIssueResponse
 )
 from .service import GovernanceService
 
@@ -106,3 +107,27 @@ def delete_audit(
     current_user: Profile = Depends(get_current_user)
 ):
     service.delete_audit(audit_id)
+
+# --- Policy Acknowledgements ---
+@router.get("/acknowledgements", response_model=PaginatedAcknowledgementResponse)
+def get_acknowledgements(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    search: Optional[str] = None,
+    service: GovernanceService = Depends(get_governance_service),
+    current_user: Profile = Depends(get_current_user)
+):
+    items, total = service.get_acknowledgements(skip, limit, search)
+    return PaginatedAcknowledgementResponse(items=items, total=total, skip=skip, limit=limit)
+
+# --- Compliance Issues ---
+@router.get("/compliance-issues", response_model=PaginatedComplianceIssueResponse)
+def get_compliance_issues(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    search: Optional[str] = None,
+    service: GovernanceService = Depends(get_governance_service),
+    current_user: Profile = Depends(get_current_user)
+):
+    items, total = service.get_compliance_issues(skip, limit, search)
+    return PaginatedComplianceIssueResponse(items=items, total=total, skip=skip, limit=limit)

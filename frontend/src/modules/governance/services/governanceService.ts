@@ -61,5 +61,15 @@ export const governanceService = {
   
   async deleteAudit(id: string): Promise<void> {
     await api.delete(`${BASE}/audits/${id}`);
+  },
+
+  async getAcknowledgements(params?: GovernanceQueryParams): Promise<PaginatedResponse<any>> {
+    const { data } = await api.get(`${BASE}/acknowledgements`, { params });
+    return data;
+  },
+
+  async getComplianceIssues(params?: GovernanceQueryParams): Promise<PaginatedResponse<any>> {
+    const { data } = await api.get(`${BASE}/compliance-issues`, { params });
+    return data;
   }
 };

@@ -77,3 +77,19 @@ export const useDeleteAudit = () => {
     },
   });
 };
+
+// --- Acknowledgements ---
+export const useAcknowledgements = (params?: GovernanceQueryParams) => {
+  return useQuery({
+    queryKey: ['governance', 'acknowledgements', params],
+    queryFn: () => governanceService.getAcknowledgements(params),
+  });
+};
+
+// --- Compliance Issues ---
+export const useComplianceIssues = (params?: GovernanceQueryParams) => {
+  return useQuery({
+    queryKey: ['governance', 'complianceIssues', params],
+    queryFn: () => governanceService.getComplianceIssues(params),
+  });
+};

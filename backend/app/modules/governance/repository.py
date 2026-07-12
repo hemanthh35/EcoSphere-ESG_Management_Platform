@@ -91,3 +91,19 @@ class GovernanceRepository:
     def delete_audit(self, audit: Audit) -> None:
         self.session.delete(audit)
         self.session.flush()
+
+    # --- Policy Acknowledgements ---
+    def get_acknowledgements(self, skip: int = 0, limit: int = 100, search: Optional[str] = None) -> Tuple[List[PolicyAcknowledgement], int]:
+        query = select(PolicyAcknowledgement)
+        total = self.session.scalar(select(func.count()).select_from(query.subquery())) or 0
+        items = self.session.scalars(query.offset(skip).limit(limit)).all()
+        return list(items), total
+
+    # --- Compliance Issues ---
+    def get_compliance_issues(self, skip: int = 0, limit: int = 100, search: Optional[str] = None) -> Tuple[List[ComplianceIssue], int]:
+        query = select(ComplianceIssue)
+        if search:
+            query = query.where(ComplianceIssue.title.ilike(f"%{search}%"))
+        total = self.session.scalar(select(func.count()).select_from(query.subquery())) or 0
+        items = self.session.scalars(query.offset(skip).limit(limit)).all()
+        return list(items), total

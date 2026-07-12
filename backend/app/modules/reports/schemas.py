@@ -14,6 +14,7 @@ class EnvironmentalReportResponse(BaseModel):
     total_water_conserved: float
     total_waste_recycled: float
     goals_progress: List[dict]
+    monthly_trend: Optional[List[dict]] = None
 
 class SocialReportResponse(BaseModel):
     total_csr_hours: float
