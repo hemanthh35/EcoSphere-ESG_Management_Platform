@@ -18,11 +18,13 @@ import { DepartmentDetailsPage } from '@/modules/department/pages/DepartmentDeta
 import { SettingsLayout } from '@/modules/settings/layouts/SettingsLayout';
 import { CategoriesPage } from '@/modules/settings/pages/CategoriesPage';
 import EmployeesPage from '@/modules/settings/pages/EmployeesPage';
+import ProductsPage from '@/modules/product-esg/pages/ProductsPage';
 import { ESGConfigurationPage } from '@/modules/settings/pages/ESGConfigurationPage';
 import { NotificationSettingsPage } from '@/modules/settings/pages/NotificationSettingsPage';
 
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { LandingPage } from '@/pages/LandingPage';
+import { EnvironmentalPage } from '@/modules/environmental/pages/EnvironmentalPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +63,7 @@ export default function App() {
                 <Route path="departments" element={<DepartmentsPage />} />
                 <Route path="categories" element={<CategoriesPage />} />
                 <Route path="employees" element={<EmployeesPage />} />
+                <Route path="products" element={<ProductsPage />} />
                 <Route path="configuration" element={<ESGConfigurationPage />} />
                 <Route path="notifications" element={<NotificationSettingsPage />} />
               </Route>
@@ -73,8 +76,8 @@ export default function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/profile/settings" element={<ChangePasswordPage />} />
 
-              {/* Placeholders for other modules */}
-              <Route path="/environmental" element={<div className="p-12 text-center text-slate-500">Environmental module coming soon.</div>} />
+              {/* Environmental Module */}
+              <Route path="/environmental" element={<EnvironmentalPage />} />
               <Route path="/social" element={<div className="p-12 text-center text-slate-500">Social module coming soon.</div>} />
               <Route path="/governance" element={<div className="p-12 text-center text-slate-500">Governance module coming soon.</div>} />
               <Route path="/gamification" element={<div className="p-12 text-center text-slate-500">Gamification module coming soon.</div>} />

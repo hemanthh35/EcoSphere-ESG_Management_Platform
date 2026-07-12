@@ -16,7 +16,7 @@ from app.modules.auth.dependencies import get_current_user
 from app.modules.auth.models import Profile, RoleEnum
 from sqlalchemy.orm import Session
 
-router = APIRouter(prefix="/employees", tags=["Employees"])
+router = APIRouter(prefix="/api/v1/employees", tags=["Employees"])
 
 def get_employee_service(db: Session = Depends(get_db)) -> EmployeeService:
     return EmployeeService(db)

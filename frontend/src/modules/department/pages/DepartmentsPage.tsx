@@ -137,10 +137,10 @@ export function DepartmentsPage() {
               <div className="text-xs text-slate-400 mt-0.5">{stat.label}</div>
             </div>
           ))}
-        </div>
+      </div>
 
-        {/* Toolbar */}
-        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+      {/* Toolbar */}
+      <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
           <form onSubmit={handleSearch} className="flex gap-2 flex-1 max-w-sm">
             <div className="relative flex-1">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -183,89 +183,90 @@ export function DepartmentsPage() {
           </div>
         </div>
 
-        {/* Data Table */}
-        <div
-          className="bg-white border border-slate-200 rounded-lg overflow-hidden"
-          style={{ boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)' }}
-        >
-          <table className="w-full border-collapse" aria-label="Departments table">
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id} className="bg-slate-50 border-b border-slate-200">
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      className="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide"
-                    >
-                      {flexRender(header.column.columnDef.header, header.getContext())}
-                    </th>
+      {/* Data Table */}
+      <div
+        className="bg-white border border-slate-200 rounded-lg overflow-hidden"
+        style={{ boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)' }}
+      >
+        <table className="w-full border-collapse" aria-label="Departments table">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id} className="bg-slate-50 border-b border-slate-200">
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    className="px-4 py-3 text-left text-xs font-semibold text-slate-600 uppercase tracking-wide"
+                  >
+                    {flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {isLoading ? (
+              <tr>
+                <td colSpan={columns.length} className="px-4 py-10 text-center text-slate-400 text-sm">
+                  Loading departments...
+                </td>
+              </tr>
+            ) : isError ? (
+              <tr>
+                <td colSpan={columns.length} className="px-4 py-10 text-center text-red-500 text-sm">
+                  Failed to load departments. Please check the API connection.
+                </td>
+              </tr>
+            ) : departments.length === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="px-4 py-10 text-center text-slate-400 text-sm">
+                  No departments found. Create your first department to get started.
+                </td>
+              </tr>
+            ) : (
+              table.getRowModel().rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className="border-b border-slate-200 hover:bg-slate-50 transition-colors"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-4 py-3 text-sm text-slate-700 align-middle">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
                   ))}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {isLoading ? (
-                <tr>
-                  <td colSpan={columns.length} className="px-4 py-10 text-center text-slate-400 text-sm">
-                    Loading departments...
-                  </td>
-                </tr>
-              ) : isError ? (
-                <tr>
-                  <td colSpan={columns.length} className="px-4 py-10 text-center text-red-500 text-sm">
-                    Failed to load departments. Please check the API connection.
-                  </td>
-                </tr>
-              ) : departments.length === 0 ? (
-                <tr>
-                  <td colSpan={columns.length} className="px-4 py-10 text-center text-slate-400 text-sm">
-                    No departments found. Create your first department to get started.
-                  </td>
-                </tr>
-              ) : (
-                table.getRowModel().rows.map((row) => (
-                  <tr
-                    key={row.id}
-                    className="border-b border-slate-200 hover:bg-slate-50 transition-colors"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className="px-4 py-3 text-sm text-slate-700 align-middle">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+              ))
+            )}
+          </tbody>
+        </table>
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200 bg-slate-50">
-              <span className="text-xs text-slate-400">
-                Page {page} of {totalPages} &mdash; {total} total departments
-              </span>
-              <div className="flex gap-1">
-                <button
-                  aria-label="Previous page"
-                  disabled={page <= 1}
-                  onClick={() => setParams((p) => ({ ...p, skip: (page - 2) * 20 }))}
-                  className="w-8 h-8 flex items-center justify-center rounded text-slate-500 hover:bg-slate-200 disabled:opacity-40 transition-colors focus-ring"
-                >
-                  <ChevronLeft size={14} />
-                </button>
-                <button
-                  aria-label="Next page"
-                  disabled={page >= totalPages}
-                  onClick={() => setParams((p) => ({ ...p, skip: page * 20 }))}
-                  className="w-8 h-8 flex items-center justify-center rounded text-slate-500 hover:bg-slate-200 disabled:opacity-40 transition-colors focus-ring"
-                >
-                  <ChevronRight size={14} />
-                </button>
-              </div>
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-between px-4 py-3 border-t border-slate-200 bg-slate-50">
+            <span className="text-xs text-slate-400">
+              Page {page} of {totalPages} &mdash; {total} total departments
+            </span>
+            <div className="flex gap-1">
+              <button
+                aria-label="Previous page"
+                disabled={page <= 1}
+                onClick={() => setParams((p) => ({ ...p, skip: (page - 2) * 20 }))}
+                className="w-8 h-8 flex items-center justify-center rounded text-slate-500 hover:bg-slate-200 disabled:opacity-40 transition-colors focus-ring"
+              >
+                <ChevronLeft size={14} />
+              </button>
+              <button
+                aria-label="Next page"
+                disabled={page >= totalPages}
+                onClick={() => setParams((p) => ({ ...p, skip: page * 20 }))}
+                className="w-8 h-8 flex items-center justify-center rounded text-slate-500 hover:bg-slate-200 disabled:opacity-40 transition-colors focus-ring"
+              >
+                <ChevronRight size={14} />
+              </button>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+      </div>
+
       {/* Form Modal */}
       {formOpen && (
         <DepartmentForm

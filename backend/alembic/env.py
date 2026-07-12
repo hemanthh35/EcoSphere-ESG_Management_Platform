@@ -14,6 +14,8 @@ from app.database.base import Base
 from app.modules.department.models import Department
 from app.modules.auth.models import Profile
 from app.modules.category.models import Category
+from app.modules.product_esg.models import ProductESGProfile
+from app.modules.environmental.models import EmissionFactor, CarbonTransaction, EnvironmentalGoal
 from app.config import get_settings
 
 settings = get_settings()

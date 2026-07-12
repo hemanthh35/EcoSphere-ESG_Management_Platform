@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Settings, Building2, LayoutGrid, Sliders, Bell, Users } from 'lucide-react';
+import { Settings, Building2, LayoutGrid, Sliders, Bell, Users, Box } from 'lucide-react';
 
 export function SettingsLayout() {
   const location = useLocation();
@@ -8,6 +8,7 @@ export function SettingsLayout() {
     { name: 'Departments', href: '/settings/departments', icon: Building2 },
     { name: 'Categories', href: '/settings/categories', icon: LayoutGrid },
     { name: 'Employees', href: '/settings/employees', icon: Users },
+    { name: 'Products', href: '/settings/products', icon: Box },
     { name: 'ESG Configuration', href: '/settings/configuration', icon: Sliders },
     { name: 'Notification Settings', href: '/settings/notifications', icon: Bell },
   ];

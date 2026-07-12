@@ -96,7 +96,7 @@ class EmployeeService:
         # Check if they have active ownership (like Department Head)
         # We would ideally check self.db.query(Department).filter_by(head_id=emp_id)
         from app.modules.department.models import Department
-        dept_head = self.db.query(Department).filter(Department.head_id == emp_id).first()
+        dept_head = self.db.query(Department).filter(Department.department_head_id == emp_id).first()
         if dept_head:
             raise EmployeeCannotDelete(f"Employee is the head of department {dept_head.name}. Reassign first.")
             
