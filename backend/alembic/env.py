@@ -13,6 +13,7 @@ from app.database.base import Base
 # Import all models here so Alembic can discover them
 from app.modules.department.models import Department
 from app.modules.auth.models import Profile
+from app.modules.category.models import Category
 from app.config import get_settings
 
 settings = get_settings()

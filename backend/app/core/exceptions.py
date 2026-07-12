@@ -9,6 +9,20 @@ class EcoSphereBaseException(Exception):
         self.detail = detail
         super().__init__(self.message)
 
+class ResourceNotFoundError(EcoSphereBaseException):
+    def __init__(self, resource_id: str):
+        super().__init__(
+            message=f"Resource with id '{resource_id}' was not found.",
+            detail={"resource_id": resource_id},
+        )
+
+class ResourceAlreadyExistsError(EcoSphereBaseException):
+    def __init__(self, field: str, value: str):
+        super().__init__(
+            message=f"A resource with {field} '{value}' already exists.",
+            detail={"field": field, "value": value},
+        )
+
 
 class DepartmentNotFoundError(EcoSphereBaseException):
     """Raised when a department cannot be found."""
