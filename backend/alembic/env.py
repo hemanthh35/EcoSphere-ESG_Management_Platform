@@ -18,6 +18,7 @@ from app.modules.product_esg.models import ProductESGProfile
 from app.modules.environmental.models import EmissionFactor, CarbonTransaction, EnvironmentalGoal
 from app.modules.social.models import CsrActivity, EmployeeParticipation, DiversityMetric, TrainingRecord
 from app.modules.governance.models import ESGPolicy, PolicyAcknowledgement, Audit, ComplianceIssue
+from app.modules.gamification.models import Challenge, ChallengeParticipation, XpTransaction
 from app.config import get_settings
 
 settings = get_settings()

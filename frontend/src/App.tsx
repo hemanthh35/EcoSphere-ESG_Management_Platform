@@ -26,6 +26,7 @@ import { PublicLayout } from '@/layouts/PublicLayout';
 import { LandingPage } from '@/pages/LandingPage';
 import { EnvironmentalPage } from '@/modules/environmental/pages/EnvironmentalPage';
 import GovernancePage from '@/modules/governance/pages/GovernancePage';
+import GamificationPage from '@/modules/gamification/pages/GamificationPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -81,7 +82,7 @@ export default function App() {
               <Route path="/environmental" element={<EnvironmentalPage />} />
               <Route path="/social" element={<div className="p-12 text-center text-slate-500">Social module coming soon.</div>} />
               <Route path="/governance" element={<GovernancePage />} />
-              <Route path="/gamification" element={<div className="p-12 text-center text-slate-500">Gamification module coming soon.</div>} />
+              <Route path="/gamification" element={<GamificationPage />} />
               <Route path="/reports" element={<div className="p-12 text-center text-slate-500">Reports module coming soon.</div>} />
             </Route>
           </Routes>
