@@ -25,6 +25,7 @@ import { NotificationSettingsPage } from '@/modules/settings/pages/NotificationS
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { LandingPage } from '@/pages/LandingPage';
 import { EnvironmentalPage } from '@/modules/environmental/pages/EnvironmentalPage';
+import GovernancePage from '@/modules/governance/pages/GovernancePage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -79,7 +80,7 @@ export default function App() {
               {/* Environmental Module */}
               <Route path="/environmental" element={<EnvironmentalPage />} />
               <Route path="/social" element={<div className="p-12 text-center text-slate-500">Social module coming soon.</div>} />
-              <Route path="/governance" element={<div className="p-12 text-center text-slate-500">Governance module coming soon.</div>} />
+              <Route path="/governance" element={<GovernancePage />} />
               <Route path="/gamification" element={<div className="p-12 text-center text-slate-500">Gamification module coming soon.</div>} />
               <Route path="/reports" element={<div className="p-12 text-center text-slate-500">Reports module coming soon.</div>} />
             </Route>

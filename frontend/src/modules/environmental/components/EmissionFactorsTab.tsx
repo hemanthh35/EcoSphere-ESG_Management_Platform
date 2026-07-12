@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useReactTable, getCoreRowModel, flexRender, createColumnHelper } from '@tanstack/react-table';
 import { Plus, Search, Edit2, Trash2 } from 'lucide-react';
 import { useEmissionFactors, useDeleteEmissionFactor } from '../hooks/useEnvironmental';
-import { EmissionFactor } from '../types/environmental';
+import type { EmissionFactor } from '../types/environmental';
 import { EmissionFactorForm } from './EmissionFactorForm';
 import { StatusBadge } from '@/components/ui/Badge';
 import { format } from 'date-fns';

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Leaf, Activity, Target, Box } from 'lucide-react';
 import { EmissionFactorsTab } from '../components/EmissionFactorsTab';
 import { CarbonTransactionsTab } from '../components/CarbonTransactionsTab';
 import { EnvironmentalGoalsTab } from '../components/EnvironmentalGoalsTab';
-import { ProductsPage } from '@/modules/product-esg/pages/ProductsPage';
+import ProductsPage from '@/modules/product-esg/pages/ProductsPage';
 
 type Tab = 'factors' | 'profiles' | 'transactions' | 'goals';
 

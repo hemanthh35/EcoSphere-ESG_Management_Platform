@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { useCreateEmissionFactor, useUpdateEmissionFactor } from '../hooks/useEnvironmental';
-import { EmissionFactor } from '../types/environmental';
+import type { EmissionFactor } from '../types/environmental';
 import { format } from 'date-fns';
 
 interface Props {

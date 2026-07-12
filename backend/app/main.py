@@ -8,6 +8,8 @@ from app.modules.category.router import router as category_router
 from app.modules.employee.router import router as employee_router
 from app.modules.product_esg.router import router as product_esg_router
 from app.modules.environmental.router import router as environmental_router
+from app.modules.social.router import router as social_router
+from app.modules.governance.router import router as governance_router
 
 app = FastAPI(
     title="EcoSphere ESG Management Platform",
@@ -34,7 +36,8 @@ app.include_router(category_router)
 app.include_router(employee_router)
 app.include_router(product_esg_router)
 app.include_router(environmental_router)
-
+app.include_router(social_router)
+app.include_router(governance_router)
 
 
 @app.get("/health", tags=["Health"])

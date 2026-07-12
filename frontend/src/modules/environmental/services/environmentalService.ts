@@ -1,5 +1,5 @@
-import api from '@/lib/api';
-import {
+import api from '@/lib/apiClient';
+import type {
   EmissionFactor,
   EmissionFactorCreate,
   EmissionFactorUpdate,

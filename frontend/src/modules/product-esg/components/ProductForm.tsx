@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { ProductESGProfile, ProductStatus, SustainabilityRating } from '@/types/product';
+import type { ProductESGProfile } from '@/types/product';
+import { ProductStatus, SustainabilityRating } from '@/types/product';
 import { useCreateProduct, useUpdateProduct } from '@/hooks/useProducts';
 import { useDepartmentDropdown } from '@/hooks/useDepartments';
 import { useCategoryDropdown } from '@/hooks/useCategories';
-import { CategoryType } from '@/types/category';
+
 import { X, Loader2 } from 'lucide-react';
 
 const schema = z.object({
@@ -38,8 +39,8 @@ interface ProductFormProps {
 
 export function ProductForm({ productId, initialData, onClose }: ProductFormProps) {
   const isEditing = !!productId || !!initialData;
-  const { data: deptResponse, isLoading: isLoadingDepts } = useDepartmentDropdown();
-  const { data: catResponse, isLoading: isLoadingCats } = useCategoryDropdown(); // wait, category service getDropdown does it take type?
+  const { data: deptResponse } = useDepartmentDropdown();
+  const { data: catResponse } = useCategoryDropdown(); // wait, category service getDropdown does it take type?
   // Let's assume catResponse.data has the categories.
   
   const createMutation = useCreateProduct();
@@ -49,9 +50,9 @@ export function ProductForm({ productId, initialData, onClose }: ProductFormProp
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<FormData>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema) as any,
     defaultValues: {
       status: ProductStatus.ACTIVE,
       recyclable: false,
@@ -70,19 +71,19 @@ export function ProductForm({ productId, initialData, onClose }: ProductFormProp
         recycled_content_percentage: initialData.recycled_content_percentage ?? '',
         category_id: initialData.category_id || '',
         sustainability_rating: initialData.sustainability_rating || '',
-      });
+      } as any);
     }
   }, [initialData, reset]);
 
   const onSubmit = (data: FormData) => {
     // Clean up empty strings back to null or undefined
-    const cleanData = {
+    const cleanData: any = {
       ...data,
-      carbon_factor: data.carbon_factor === '' ? null : Number(data.carbon_factor),
-      esg_score: data.esg_score === '' ? null : Number(data.esg_score),
-      recycled_content_percentage: data.recycled_content_percentage === '' ? null : Number(data.recycled_content_percentage),
-      category_id: data.category_id === '' ? null : data.category_id,
-      sustainability_rating: data.sustainability_rating === '' ? null : data.sustainability_rating,
+      carbon_factor: data.carbon_factor === '' ? undefined : Number(data.carbon_factor),
+      esg_score: data.esg_score === '' ? undefined : Number(data.esg_score),
+      recycled_content_percentage: data.recycled_content_percentage === '' ? undefined : Number(data.recycled_content_percentage),
+      category_id: data.category_id === '' ? undefined : data.category_id,
+      sustainability_rating: data.sustainability_rating === '' ? undefined : data.sustainability_rating,
     };
 
     if (isEditing && initialData?.id) {
@@ -108,7 +109,7 @@ export function ProductForm({ productId, initialData, onClose }: ProductFormProp
         </div>
 
         <div className="flex-1 overflow-y-auto p-6">
-          <form id="product-form" onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          <form id="product-form" onSubmit={(e) => { handleSubmit(onSubmit as any)(e); }} className="space-y-8">
             
             {/* General Info */}
             <section>
@@ -138,7 +139,7 @@ export function ProductForm({ productId, initialData, onClose }: ProductFormProp
                   <label className="text-sm font-medium text-slate-700">Category</label>
                   <select {...register('category_id')} className="w-full px-3 py-2 border rounded-md">
                     <option value="">Select...</option>
-                    {catResponse?.data?.map((c: any) => (
+                    {catResponse?.map((c: any) => (
                       <option key={c.id} value={c.id}>{c.category_name}</option>
                     ))}
                   </select>

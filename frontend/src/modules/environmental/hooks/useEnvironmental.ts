@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { environmentalService } from '../services/environmentalService';
-import { EnvironmentalQueryParams, EmissionFactorCreate, EmissionFactorUpdate, CarbonTransactionCreate, CarbonTransactionUpdate, EnvironmentalGoalCreate, EnvironmentalGoalUpdate } from '../types/environmental';
+import type { EnvironmentalQueryParams, EmissionFactorCreate, EmissionFactorUpdate, CarbonTransactionCreate, CarbonTransactionUpdate, EnvironmentalGoalCreate, EnvironmentalGoalUpdate } from '../types/environmental';
 
 // --- Emission Factors ---
 

@@ -36,7 +36,7 @@ class EmployeeParticipation(Base):
     __tablename__ = "employee_participation"
 
     id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    employee_id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), ForeignKey("employees.id", ondelete="CASCADE"), nullable=False, index=True)
+    employee_id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), ForeignKey("profiles.id", ondelete="CASCADE"), nullable=False, index=True)
     activity_id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), ForeignKey("csr_activities.id", ondelete="CASCADE"), nullable=False, index=True)
     proof_url: Mapped[Optional[str]] = mapped_column(String(1024), nullable=True)
     approval_status: Mapped[str] = mapped_column(String(20), default="PENDING", nullable=False)
@@ -72,7 +72,7 @@ class TrainingRecord(Base):
     __tablename__ = "training_records"
 
     id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    employee_id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), ForeignKey("employees.id", ondelete="CASCADE"), nullable=False, index=True)
+    employee_id: Mapped[uuid.UUID] = mapped_column(PG_UUID(as_uuid=True), ForeignKey("profiles.id", ondelete="CASCADE"), nullable=False, index=True)
     training_name: Mapped[str] = mapped_column(String(255), nullable=False)
     completion_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
     expiry_date: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True), nullable=True)
