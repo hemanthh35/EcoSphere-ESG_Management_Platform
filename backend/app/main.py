@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.modules.department.router import router as department_router
+from app.modules.auth.router import router as auth_router
 
 app = FastAPI(
     title="EcoSphere ESG Management Platform",
@@ -22,6 +23,7 @@ app.add_middleware(
 )
 
 # Register routers
+app.include_router(auth_router)
 app.include_router(department_router)
 
 

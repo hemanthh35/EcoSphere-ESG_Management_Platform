@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.database.session import get_db
+from app.modules.auth.dependencies import get_current_user, RoleChecker
+from app.modules.auth.models import Profile, RoleEnum
 from app.modules.department.service import DepartmentService
 from app.modules.department.schemas import (
     DepartmentCreate,
@@ -23,9 +25,6 @@ from app.core.constants import DepartmentSortField, SortOrder
 
 router = APIRouter(prefix="/api/v1/departments", tags=["Departments"])
 
-# Placeholder: In production, extract from JWT token
-MOCK_USER_ID = uuid.UUID("00000000-0000-0000-0000-000000000001")
-
 
 def get_service(db: Session = Depends(get_db)) -> DepartmentService:
     return DepartmentService(db)
@@ -41,6 +40,7 @@ def list_departments(
     sort_by: DepartmentSortField = Query(DepartmentSortField.CREATED_AT),
     sort_order: SortOrder = Query(SortOrder.DESC),
     service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
 ):
     """List departments with pagination, filtering, and searching."""
     try:
@@ -72,10 +72,11 @@ def list_departments(
 def create_department(
     payload: DepartmentCreate,
     service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(RoleChecker([RoleEnum.ADMIN, RoleEnum.ESG_MANAGER])),
 ):
     """Create a new department."""
     try:
-        dept = service.create_department(payload, created_by=MOCK_USER_ID)
+        dept = service.create_department(payload, created_by=current_user.id)
         return ResponseModel.ok(data=dept, message="Department created successfully.")
     except DepartmentAlreadyExistsError as e:
         raise HTTPException(status_code=409, detail=e.message)
@@ -89,6 +90,7 @@ def create_department(
 def get_department(
     dept_id: uuid.UUID,
     service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(get_current_user),
 ):
     """Retrieve a single department by ID."""
     try:
@@ -105,10 +107,11 @@ def update_department(
     dept_id: uuid.UUID,
     payload: DepartmentUpdate,
     service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(RoleChecker([RoleEnum.ADMIN, RoleEnum.ESG_MANAGER])),
 ):
     """Update an existing department."""
     try:
-        dept = service.update_department(dept_id, payload, updated_by=MOCK_USER_ID)
+        dept = service.update_department(dept_id, payload, updated_by=current_user.id)
         return ResponseModel.ok(data=dept, message="Department updated successfully.")
     except DepartmentNotFoundError as e:
         raise HTTPException(status_code=404, detail=e.message)
@@ -124,10 +127,11 @@ def update_department(
 def delete_department(
     dept_id: uuid.UUID,
     service: DepartmentService = Depends(get_service),
+    current_user: Profile = Depends(RoleChecker([RoleEnum.ADMIN])),
 ):
     """Soft-delete a department (cannot have children or employees)."""
     try:
-        dept = service.delete_department(dept_id, updated_by=MOCK_USER_ID)
+        dept = service.delete_department(dept_id, updated_by=current_user.id)
         return ResponseModel.ok(data=dept, message="Department deleted successfully.")
     except DepartmentNotFoundError as e:
         raise HTTPException(status_code=404, detail=e.message)

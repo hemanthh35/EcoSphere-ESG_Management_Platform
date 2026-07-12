@@ -1,0 +1,38 @@
+import uuid
+import enum
+from datetime import datetime, timezone
+from sqlalchemy import Column, String, ForeignKey, Enum, DateTime
+from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.orm import relationship
+from app.database.base import Base
+
+class RoleEnum(str, enum.Enum):
+    ADMIN = "Admin"
+    ESG_MANAGER = "ESG Manager"
+    DEPARTMENT_HEAD = "Department Head"
+    AUDITOR = "Auditor"
+    EMPLOYEE = "Employee"
+
+class Profile(Base):
+    __tablename__ = "profiles"
+
+    # Supabase auth.users ID is a UUID. We use this as our primary key.
+    id = Column(UUID(as_uuid=True), primary_key=True)
+    employee_code = Column(String, unique=True, index=True, nullable=True)
+    full_name = Column(String, index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    role = Column(Enum(RoleEnum), default=RoleEnum.EMPLOYEE, nullable=False)
+    
+    # Optional relationships
+    department_id = Column(UUID(as_uuid=True), ForeignKey("departments.id", ondelete="SET NULL"), nullable=True)
+    department = relationship("Department")
+    
+    designation = Column(String, nullable=True)
+    profile_image = Column(String, nullable=True)
+    phone = Column(String, nullable=True)
+    status = Column(String, default="active")
+    
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    created_by = Column(UUID(as_uuid=True), nullable=True)
+    updated_by = Column(UUID(as_uuid=True), nullable=True)
