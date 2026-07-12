@@ -36,21 +36,65 @@ While many ERP systems collect operational data, ESG reporting is often manual, 
 - **Compliance Issue**: Governance violations.
 - **Department Score**: Aggregated ESG performance per department.
 
-## Business Workflow
+## Business Workflow & Data Flow
 
 ```mermaid
 flowchart TD
-    MC["Master Configuration<br>(Departments, Categories, Emission Factors, Products, Goals, Policies, Challenges)"] --> DBO["Daily Business Operations<br>(Purchase, Manufacturing, Expenses, Fleet)"]
-    DBO --> CT["Carbon Transactions"]
-    DBO --> EP["Employee Participation (CSR), Challenge Participation, Policy Acknowledgements, Audits"]
-    
-    CT --> ES["Environmental Score"]
-    EP --> SS["Social Score"]
-    EP --> GS["Governance Score"]
-    
-    ES & SS & GS --> DTS["Department Total Score"]
-    DTS --> OES["Overall ESG Score<br>(Weighted average: Env 40%, Soc 30%, Gov 30%)"]
-    OES --> ODR["Organization Dashboard & Reports"]
+    %% Master Data Configuration
+    subgraph Master["1. Master Configuration"]
+        direction LR
+        Dep[Departments]
+        Cat[Categories]
+        EF[Emission Factors]
+        Pol[ESG Policies]
+        Gls[Sustainability Goals]
+        Cat -.->|Used in| CSR[CSR Activities]
+        Cat -.->|Used in| Chal[Challenges]
+    end
+
+    %% Environmental Module
+    subgraph Env["2. Environmental Flow"]
+        direction TB
+        ERP[ERP Operations<br>(Purchase, Mfg, Fleet, Expenses)] -->|Auto-Calculated using EF| CT[Carbon Transactions]
+        CT --> ES[Environmental Score]
+    end
+
+    %% Social & Gamification Module
+    subgraph Soc["3. Social & Gamification Flow"]
+        direction TB
+        CSR --> EP[Employee Participation]
+        Chal --> CP[Challenge Participation]
+        EP -->|Evidence Attached| Appr[Approval Process]
+        CP -->|Evidence Attached| Appr
+        Appr -->|Approved| XP[Points & XP Earned]
+        XP -->|Rules Met| Bdg[Auto-Award Badges]
+        XP -->|Spend Points| Rwd[Redeem Rewards]
+        XP --> SS[Social Score]
+    end
+
+    %% Governance Module
+    subgraph Gov["4. Governance Flow"]
+        direction TB
+        Pol --> PA[Policy Acknowledgements]
+        Aud[Audits] --> CI[Compliance Issues]
+        CI -->|Assign Owner & Due Date| Flag[Track & Flag Overdue]
+        PA & Flag --> GS[Governance Score]
+    end
+
+    %% Final Scoring & Reporting
+    subgraph Rollup["5. Scoring & Reporting Rollup"]
+        direction TB
+        ES & SS & GS --> DeptScore[Department Total Score]
+        DeptScore -->|Weighted Average<br>(e.g., Env 40%, Soc 30%, Gov 30%)| Overall[Overall ESG Score]
+        Overall --> Dash[Dashboards & Custom Reports]
+    end
+
+    Master --> Env
+    Master --> Soc
+    Master --> Gov
+    Env --> Rollup
+    Soc --> Rollup
+    Gov --> Rollup
 ```
 
 1. **Master Configuration**: Departments, Categories, Emission Factors, Products, Goals, Policies, Challenges.
