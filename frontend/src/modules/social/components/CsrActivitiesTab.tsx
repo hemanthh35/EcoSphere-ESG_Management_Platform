@@ -28,39 +28,7 @@ export function CsrActivitiesTab() {
       setActivities(data);
     } catch (err) {
       console.error('Failed to load CSR activities', err);
-      // Mock data in case backend endpoint returns empty/fails to connect
-      setActivities([
-        {
-          id: '1',
-          activity_code: 'CSR-001',
-          title: 'Community Tree Plantation Drive',
-          description: 'Planting 1000 trees across the city park area.',
-          start_date: '2026-08-10T09:00:00Z',
-          end_date: '2026-08-10T17:00:00Z',
-          location: 'City Green Park',
-          max_participants: 50,
-          status: 'PLANNED',
-          created_by: '1',
-          updated_by: '1',
-          created_at: '',
-          updated_at: ''
-        },
-        {
-          id: '2',
-          activity_code: 'CSR-002',
-          title: 'E-Waste Recycling Awareness',
-          description: 'Educating corporate employees and community on safe e-waste disposal.',
-          start_date: '2026-07-20T10:00:00Z',
-          end_date: '2026-07-22T16:00:00Z',
-          location: 'Conference Hall B',
-          max_participants: 100,
-          status: 'ONGOING',
-          created_by: '1',
-          updated_by: '1',
-          created_at: '',
-          updated_at: ''
-        }
-      ]);
+      setActivities([]);
     } finally {
       setLoading(false);
     }

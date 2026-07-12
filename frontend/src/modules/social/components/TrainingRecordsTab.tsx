@@ -25,31 +25,7 @@ export function TrainingRecordsTab() {
       setRecords(recordsData);
     } catch (err) {
       console.error(err);
-      // Mockup
-      setRecords([
-        {
-          id: '1',
-          employee_id: 'e1',
-          training_name: 'ESG Fundamentals & Compliance',
-          completion_date: '2025-06-01T00:00:00Z',
-          expiry_date: '2026-06-01T00:00:00Z',
-          status: 'EXPIRED',
-          certificate_url: 'https://example.com/cert1.pdf',
-          created_at: '',
-          updated_at: ''
-        },
-        {
-          id: '2',
-          employee_id: 'e2',
-          training_name: 'Carbon Accounting Workshop',
-          completion_date: '2026-01-15T00:00:00Z',
-          expiry_date: '2027-01-15T00:00:00Z',
-          status: 'COMPLETED',
-          certificate_url: 'https://example.com/cert2.pdf',
-          created_at: '',
-          updated_at: ''
-        }
-      ]);
+      setRecords([]);
     }
 
     try {
@@ -57,16 +33,10 @@ export function TrainingRecordsTab() {
       if (empRes) {
         setEmployees(empRes.map(emp => ({ id: emp.id, name: emp.full_name })));
       } else {
-        setEmployees([
-          { id: 'e1', name: 'Jane Doe' },
-          { id: 'e2', name: 'John Smith' }
-        ]);
+        setEmployees([]);
       }
     } catch (err) {
-      setEmployees([
-        { id: 'e1', name: 'Jane Doe' },
-        { id: 'e2', name: 'John Smith' }
-      ]);
+      setEmployees([]);
     } finally {
       setLoading(false);
     }

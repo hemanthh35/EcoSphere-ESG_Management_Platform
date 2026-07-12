@@ -23,27 +23,7 @@ export function DiversityMetricsTab() {
       setMetrics(metricsData);
     } catch (err) {
       console.error(err);
-      // Fallback mockup
-      setMetrics([
-        {
-          id: '1',
-          department_id: 'd1',
-          metric_name: 'Gender Diversity - Female',
-          metric_value: 45,
-          reporting_period: 'Q1 2026',
-          created_at: '',
-          updated_at: ''
-        },
-        {
-          id: '2',
-          department_id: 'd2',
-          metric_name: 'Management Diversity',
-          metric_value: 35,
-          reporting_period: 'Q1 2026',
-          created_at: '',
-          updated_at: ''
-        }
-      ]);
+      setMetrics([]);
     }
 
     try {
@@ -51,18 +31,10 @@ export function DiversityMetricsTab() {
       if (deptsRes && deptsRes.data) {
         setDepartments(deptsRes.data.map(d => ({ id: d.id, name: d.name })));
       } else {
-        setDepartments([
-          { id: 'd1', name: 'Product Engineering' },
-          { id: 'd2', name: 'Marketing & Sales' },
-          { id: 'd3', name: 'Human Resources' }
-        ]);
+        setDepartments([]);
       }
     } catch (err) {
-      setDepartments([
-        { id: 'd1', name: 'Product Engineering' },
-        { id: 'd2', name: 'Marketing & Sales' },
-        { id: 'd3', name: 'Human Resources' }
-      ]);
+      setDepartments([]);
     } finally {
       setLoading(false);
     }
